@@ -26,7 +26,7 @@ database contains a single model called Message with a single field called conte
 #### Web sockets
 The websockets is implemented in rust.
 The `server/src/main.rs` file contain the code running the websocket server and saving messages into database.
-The `server/src/index.html` file contains the frontend code, a small interface where the user can connect to the websocket server send messages , and it also shows the message history.
+The `server/index.html` file contains the frontend code, a small interface where the user can connect to the websocket server send messages , and it also shows the message history.
 
 
 #### How to run
