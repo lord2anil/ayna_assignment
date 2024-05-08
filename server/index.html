@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="message-input" placeholder="Enter a message" />
+    <button type="submit">submit</button>
+
+
+    <h1>Recived Message</h1>
+    <p id="recived-message"></p>
+
+    <h2>Message history</h2>
+    <ul id="message-history"></ul>
+
+    
+    
+</body>
+
+<script>
+    
+    let recivedMessage = document.getElementById('recived-message');
+    let messageHistory = document.getElementById('message-history');
+
+    let apiUrl='http://localhost:1337/api/messages'
+    let messages ="";
+    fetch(apiUrl)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .then(data => {
+    let new_data=data.data;
+    console.log(new_data);
+    let y=""
+    for(let i=0;i<new_data.length;i++){
+      let xx="<li>";
+        xx=xx+new_data[i].attributes.msg;
+        xx+="</li>"
+        y=y+xx;
+    }
+    messageHistory.innerHTML=y;
+
+    
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+
+
+const socket = new WebSocket('ws://localhost:9001');
+
+// when submit button is clicked
+document.querySelector('button').addEventListener('click', () => {
+  // Get the message from the input
+  const message = document.getElementById('message-input').value;
+
+  // Send the message through the WebSocket
+  socket.send(message);
+});
+// cosole log the message
+socket.onmessage = (event) => {
+  console.log(event.data);
+  recivedMessage.innerHTML = event.data;
+};
+
+
+
+
+
+</script>
+</html>
